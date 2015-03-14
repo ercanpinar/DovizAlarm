@@ -1,0 +1,14 @@
+<resources>
+    <!-- Color names are taken from http://www.colorhexa.com/ -->
+    <color name="black_overlay">#66000000</color>
+    <color name="white_overlay">#40FFFFFF</color>
+    <color name="red_strong">#C70E1D</color>
+    <color name="red_vivid">#E11021</color>
+    <color name="white">#FFFFFF</color>
+    <color name="cyan_strong">#14B9D6</color>
+    <color name="gray_dark_grayish_blue">#53565A</color>
+    <color name="gray_more_dark_grayish_blue">#4C4F53</color>
+    <color name="gray_light">#EAEDF1</color>
+
+
+</resources>
