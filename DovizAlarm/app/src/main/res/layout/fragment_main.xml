@@ -10,7 +10,7 @@
         android:layout_height="70dp"
         android:background="@color/cyan_strong"
         android:clickable="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
@@ -54,12 +54,12 @@
                     android:textColor="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_dolar_alis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="5dp"
                     android:gravity="right|center"
                     android:singleLine="true"
-                    android:text="123.223 TL"
                     android:textSize="22sp"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -90,11 +90,11 @@
                     android:textColor="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_dolar_satis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="20dp"
                     android:gravity="right|center"
-                    android:text="123.223 TL"
                     android:singleLine="true"
                     android:textSize="22sp"
                     android:textColor="@color/white"/>
@@ -108,7 +108,7 @@
         android:layout_height="70dp"
         android:background="@color/cyan_strong"
         android:clickable="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="120dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
@@ -152,12 +152,12 @@
                     android:textColor="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_euro_alis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="5dp"
                     android:singleLine="true"
                     android:gravity="right|center"
-                    android:text="123.223 TL"
                     android:textSize="22sp"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -188,11 +188,11 @@
                     android:textColor="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_euro_satis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="20dp"
                     android:gravity="right|center"
-                    android:text="123.223 TL"
                     android:textSize="22sp"
                     android:singleLine="true"
                     android:textColor="@color/white"/>
@@ -206,7 +206,7 @@
         android:layout_height="70dp"
         android:background="@color/cyan_strong"
         android:clickable="true"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="210dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
@@ -250,11 +250,11 @@
                     android:textColor="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_altin_alis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="5dp"
                     android:gravity="right|center"
-                    android:text="123.223 TL"
                     android:textSize="22sp"
                     android:singleLine="true"
                     android:textColor="@color/white"/>
@@ -286,16 +286,39 @@
                     android:textColor="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_altin_satis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="20dp"
                     android:gravity="right|center"
-                    android:text="123.223 TL"
                     android:textSize="22sp"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="BİLGİ"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/gray_more_dark_grayish_blue"/>
+
+    <TextView
+        android:id="@+id/tv_guncelleme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginTop="320dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="14sp"
+        android:textColor="@color/gray_dark_grayish_blue"/>
 
 
     <com.gc.materialdesign.views.LayoutRipple
