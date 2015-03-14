@@ -1,7 +1,6 @@
 package com.doviz.alarm;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -13,13 +12,13 @@ public class MainActivity extends BaseActivity {
     FragmentTransaction ft;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fm = this.getSupportFragmentManager();
         replaceFragment(new MainFragment());
     }
-
+    
     @Override
     protected void onStart() {
         super.onStart();
@@ -39,7 +38,6 @@ public class MainActivity extends BaseActivity {
     private void replaceFragment(BaseFragment fragment) {
         ft = fm.beginTransaction();
         ft.replace(R.id.frame_main, fragment);
-        ft.addToBackStack(null);
-        ft.commitAllowingStateLoss();
+        ft.commit();
     }
 }
