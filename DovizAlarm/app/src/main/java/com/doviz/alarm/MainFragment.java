@@ -60,17 +60,12 @@ public class MainFragment extends BaseFragment {
         ButterKnife.inject(this, rootView);
         rq = Volley.newRequestQueue(getActivity());
         refreshRequest();
-        startTimer();
-        return rootView;
-    }
 
-    private void startTimer() {
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                refreshRequest();
-            }
-        }, 5000);
+        MyTimerTask yourTask = new MyTimerTask();
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(yourTask, 0, 5000);
+
+        return rootView;
     }
 
     @Override
@@ -90,7 +85,7 @@ public class MainFragment extends BaseFragment {
      */
     @OnClick(R.id.lr_alarm)
     public void alarmBtnClick(View view) {
-        refreshRequest();
+//        refreshRequest();
     }
 
     /**
@@ -145,5 +140,11 @@ public class MainFragment extends BaseFragment {
         }
         );
         rq.add(jReq);
+    }
+
+    private class MyTimerTask extends TimerTask {
+        public void run() {
+            refreshRequest();
+        }
     }
 }
