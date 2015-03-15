@@ -1,12 +1,15 @@
 package com.doviz.alarm;
 
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.doviz.alarm.response.DovizResponse;
+import com.gc.materialdesign.views.LayoutRipple;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -91,7 +95,38 @@ public class MainFragment extends BaseFragment {
      */
     @OnClick(R.id.lr_alarm)
     public void alarmBtnClick(View view) {
-        
+        alarmDialog();
+    }
+
+    private void alarmDialog() {
+        serviceStartStop();
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_alarm);
+        final EditText dolarAlisAlrm = (EditText) dialog.findViewById(R.id.edt_dolar_alis_alarm);
+        final EditText dolarSatisAlrm = (EditText) dialog.findViewById(R.id.edt_dolar_satis_alarm);
+        final EditText euroAlisAlrm = (EditText) dialog.findViewById(R.id.edt_euro_alis_alarm);
+        final EditText euroSatisAlrm = (EditText) dialog.findViewById(R.id.edt_euro_satis_alarm);
+        LayoutRipple dialogButton = (LayoutRipple) dialog.findViewById(R.id.lr_dialogButton);
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPref shrp = new SharedPref(getActivity());
+                if (!dolarAlisAlrm.getText().toString().trim().equals(""))
+                    shrp.updateAlarm(shrp.DOLAR_ALIS, dolarAlisAlrm.getText().toString().trim());
+                if (!euroAlisAlrm.getText().toString().trim().equals(""))
+                    shrp.updateAlarm(shrp.EURO_ALIS, euroAlisAlrm.getText().toString().trim());
+                if (!dolarSatisAlrm.getText().toString().trim().equals(""))
+                    shrp.updateAlarm(shrp.DOLAR_SATIS, dolarSatisAlrm.getText().toString().trim());
+                if (!euroSatisAlrm.getText().toString().trim().equals(""))
+                    shrp.updateAlarm(shrp.EURO_SATIS, euroSatisAlrm.getText().toString().trim());
+                serviceStart();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     /**
@@ -163,9 +198,6 @@ public class MainFragment extends BaseFragment {
 
     private void serviceStart() {
         if (!servisCalisiyorMu()) {
-            Crouton.makeText(
-                    MainFragment.this.getActivity(), "Servis Baslatıldı.",
-                    Style.INFO).show();
             getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
         }
     }
@@ -180,22 +212,17 @@ public class MainFragment extends BaseFragment {
         }
         return false;
     }
+
     /**
      * Service start-stop
-     * */
-    /**
-     *
-     if (servisCalisiyorMu()) {
-     Crouton.makeText(
-     MainFragment.this.getActivity(), "Durdur",
-     Style.ALERT).show();
-     getActivity().stopService(new Intent(getActivity(), DovizAlarmService.class));
-     } else {
-     Crouton.makeText(
-     MainFragment.this.getActivity(), "Baslat",
-     Style.INFO).show();
-     getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
-     }
-     *
-     * */
+     */
+    public void serviceStartStop() {
+        if (servisCalisiyorMu()) {
+            getActivity().stopService(new Intent(getActivity(), DovizAlarmService.class));
+        } else
+
+        {
+            getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
+        }
+    }
 }

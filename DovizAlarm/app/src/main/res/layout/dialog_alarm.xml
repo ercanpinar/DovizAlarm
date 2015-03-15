@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/gray_light">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="ALARM"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/red_strong"/>
 
     <LinearLayout
+        android:id="@+id/ll_dolar_alis_satis_alarm"
+
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/cyan_strong"
         android:clickable="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="80dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
@@ -53,14 +65,15 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <TextView
-                    android:id="@+id/tv_dolar_alis"
+                <EditText
+                    android:id="@+id/edt_dolar_alis_alarm"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="5dp"
                     android:gravity="right|center"
                     android:singleLine="true"
                     android:textSize="22sp"
+                    android:digits="0123456789."
                     android:textColor="@color/white"/>
             </LinearLayout>
         </RelativeLayout>
@@ -89,26 +102,29 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <TextView
-                    android:id="@+id/tv_dolar_satis"
+                <EditText
+                    android:id="@+id/edt_dolar_satis_alarm"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="20dp"
                     android:gravity="right|center"
                     android:singleLine="true"
                     android:textSize="22sp"
+                    android:digits="0123456789."
                     android:textColor="@color/white"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_euro_alis_satis_alarm"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/cyan_strong"
         android:clickable="true"
-        android:layout_marginTop="120dp"
+        android:layout_below="@+id/ll_dolar_alis_satis_alarm"
+        android:layout_marginTop="170dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
@@ -151,14 +167,15 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <TextView
-                    android:id="@+id/tv_euro_alis"
+                <EditText
+                    android:id="@+id/edt_euro_alis_alarm"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="5dp"
                     android:singleLine="true"
                     android:gravity="right|center"
                     android:textSize="22sp"
+                    android:digits="0123456789."
                     android:textColor="@color/white"/>
             </LinearLayout>
         </RelativeLayout>
@@ -187,203 +204,43 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <TextView
-                    android:id="@+id/tv_euro_satis"
+                <EditText
+                    android:id="@+id/edt_euro_satis_alarm"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="20dp"
                     android:gravity="right|center"
                     android:textSize="22sp"
+                    android:digits="0123456789."
                     android:singleLine="true"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/cyan_strong"
-        android:clickable="true"
-        android:layout_marginTop="210dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center"
-        android:weightSum="5"
-        android:visibility="gone"
-        >
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:src="@drawable/gold"/>
-        </RelativeLayout>
-
-        <FrameLayout
-            android:layout_width="2dp"
-            android:background="@color/gray_dark_grayish_blue"
-            android:layout_height="match_parent">
-        </FrameLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Alış"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/tv_altin_alis"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingRight="5dp"
-                    android:gravity="right|center"
-                    android:textSize="22sp"
-                    android:singleLine="true"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <FrameLayout
-            android:layout_width="2dp"
-            android:background="@color/gray_dark_grayish_blue"
-            android:layout_height="match_parent">
-        </FrameLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.25">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Satış"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/tv_altin_satis"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingRight="20dp"
-                    android:gravity="right|center"
-                    android:textSize="22sp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="BİLGİ"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/gray_more_dark_grayish_blue"/>
-
-    <TextView
-        android:id="@+id/tv_guncelleme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_marginTop="320dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textSize="14sp"
-        android:textColor="@color/gray_dark_grayish_blue"/>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_marginTop="360dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="ALARM DEĞERLERİ"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/gray_more_dark_grayish_blue"/>
-
-    <TextView
-        android:id="@+id/tv_dolar_alis_satis_alarm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_marginTop="385dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textSize="14sp"
-        android:textColor="@color/gray_dark_grayish_blue"/>
-
-    <TextView
-        android:id="@+id/tv_euro_alis_satis_alarm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_marginTop="400dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textSize="14sp"
-        android:textColor="@color/gray_dark_grayish_blue"/>
 
     <com.gc.materialdesign.views.LayoutRipple
-        android:id="@+id/lr_alarm"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/lr_dialogButton"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ll_euro_alis_satis_alarm"
         android:background="@color/red_strong"
         android:clickable="true"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center|left"
         >
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:padding="5dp"
-            android:src="@drawable/alarm"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="100dp"
-            android:text="ALARM KUR"
+            android:gravity="center"
+            android:text="TAMAM"
             android:textSize="24sp"
             android:textColor="@color/white"/>
     </com.gc.materialdesign.views.LayoutRipple>
+
+
 </RelativeLayout>

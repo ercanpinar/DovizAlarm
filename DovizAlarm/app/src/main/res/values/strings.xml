@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DovizAlarm</string>
+    <string name="dolar_min_alarm">Dolar satış değeri alarm değerine eşit veya altında.</string>
+    <string name="euro_min_alarm">Euro satış değeri alarm değerine veya altında.</string>
+    <string name="dolar_max_alarm">Dolar alış değeri alarm değerine eşit veya üzerinde.</string>
+    <string name="euro_max_alarm">Euro alış değeri alarm değerine eşit veya üzerinde.</string>
+    <string name="default_min_alarm">Alış için belirtilen alarm değerine eşit veya üzerinde.</string>
+    <string name="default_max_alarm">Satış için belirtilen alarm değerine eşit veya altında.</string>
+
 </resources>

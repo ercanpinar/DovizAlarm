@@ -31,7 +31,7 @@
         </activity>
 
         <service android:name="DovizAlarmService"></service>
-
+        <receiver android:name=".DovizAlarmReceiver"></receiver>
     </application>
 
 </manifest>
