@@ -1,5 +1,7 @@
 package com.doviz.alarm;
 
+import android.app.ActivityManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,16 +55,18 @@ public class MainFragment extends BaseFragment {
     TextView mTvAltinSatis;
     @InjectView(R.id.tv_guncelleme)
     TextView mTvGuncelleme;
+    MyTimerTask yourTask;
+    Timer t;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
         rq = Volley.newRequestQueue(getActivity());
+        serviceStart();
         refreshRequest();
-
-        MyTimerTask yourTask = new MyTimerTask();
-        Timer t = new Timer();
+        yourTask = new MyTimerTask();
+        t = new Timer();
         t.scheduleAtFixedRate(yourTask, 0, 5000);
 
         return rootView;
@@ -75,8 +79,10 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
+        t.cancel();
         Crouton.cancelAllCroutons();
         ButterKnife.reset(this);
+        this.rq.cancelAll(this);
         super.onDestroyView();
     }
 
@@ -85,61 +91,68 @@ public class MainFragment extends BaseFragment {
      */
     @OnClick(R.id.lr_alarm)
     public void alarmBtnClick(View view) {
-//        refreshRequest();
+        
     }
 
     /**
      * Request
      */
-    private void refreshRequest() {
-        jReq = new JsonObjectRequest(Request.Method.POST, DOVIZ_URL, null,
-                new Response.Listener<JSONObject>() {
+    public void refreshRequest() {
+        if (((MainActivity) getActivity()).internetConnectionCheck()) {
+            jReq = new JsonObjectRequest(Request.Method.POST, DOVIZ_URL, null,
+                    new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            Gson gson = new Gson();
-                            Type type = new TypeToken<DovizResponse>() {
-                            }.getType();
-                            DovizResponse data = null;
-                            String tempStr = response.toString();
-                            try {
-                                URLEncoder.encode(tempStr, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            data = gson.fromJson(tempStr, type);
-                            if (data != null) {
-                                mTvDolarAlis.setText(data.dolar + " TL");
-                                mTvDolarSatis.setText(data.dolar2 + " TL");
-                                mTvEuroAlis.setText(data.euro + " TL");
-                                mTvEuroSatis.setText(data.euro2 + " TL");
-                                mTvGuncelleme.setText(data.guncelleme);
-                            } else {
-                                Crouton.cancelAllCroutons();
-                                Crouton.makeText(
-                                        MainFragment.this.getActivity(), "Bir sorun oluştu.",
-                                        Style.ALERT).show();
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (response != null) {
+                                Gson gson = new Gson();
+                                Type type = new TypeToken<DovizResponse>() {
+                                }.getType();
+                                DovizResponse data = null;
+                                String tempStr = response.toString();
+                                try {
+                                    URLEncoder.encode(tempStr, "UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                data = gson.fromJson(tempStr, type);
+                                if (data != null) {
+                                    mTvDolarAlis.setText(data.dolar + " TL");
+                                    mTvDolarSatis.setText(data.dolar2 + " TL");
+                                    mTvEuroAlis.setText(data.euro + " TL");
+                                    mTvEuroSatis.setText(data.euro2 + " TL");
+                                    mTvGuncelleme.setText(data.guncelleme);
+                                } else {
+                                    Crouton.cancelAllCroutons();
+                                    Crouton.makeText(
+                                            MainFragment.this.getActivity(), "Bir sorun oluştu.",
+                                            Style.ALERT).show();
+                                }
                             }
                         }
                     }
+
+                    , new Response.ErrorListener()
+
+            {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Volley hatasi ", error.toString());
+                    Crouton.cancelAllCroutons();
+                    Crouton.makeText(
+                            MainFragment.this.getActivity(), "Bir hata oluştu.",
+                            Style.ALERT).show();
                 }
-
-                , new Response.ErrorListener()
-
-        {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley hatasi ", error.toString());
-                Crouton.cancelAllCroutons();
-                Crouton.makeText(
-                        MainFragment.this.getActivity(), "Bir sorun oluştu.2",
-                        Style.ALERT).show();
             }
+            );
+            rq.add(jReq);
+        } else {
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "İnternet bağlantınızı kontrol ediniz.",
+                    Style.ALERT).show();
         }
-        );
-        rq.add(jReq);
     }
 
     private class MyTimerTask extends TimerTask {
@@ -147,4 +160,42 @@ public class MainFragment extends BaseFragment {
             refreshRequest();
         }
     }
+
+    private void serviceStart() {
+        if (!servisCalisiyorMu()) {
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "Servis Baslatıldı.",
+                    Style.INFO).show();
+            getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
+        }
+    }
+
+    private boolean servisCalisiyorMu() {
+        ActivityManager servisYoneticisi = (ActivityManager) getActivity().getSystemService(getActivity().ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningServiceInfo servis : servisYoneticisi.getRunningServices(Integer.MAX_VALUE)) {
+            if (getActivity().getPackageName().equals(servis.service.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Service start-stop
+     * */
+    /**
+     *
+     if (servisCalisiyorMu()) {
+     Crouton.makeText(
+     MainFragment.this.getActivity(), "Durdur",
+     Style.ALERT).show();
+     getActivity().stopService(new Intent(getActivity(), DovizAlarmService.class));
+     } else {
+     Crouton.makeText(
+     MainFragment.this.getActivity(), "Baslat",
+     Style.INFO).show();
+     getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
+     }
+     *
+     * */
 }

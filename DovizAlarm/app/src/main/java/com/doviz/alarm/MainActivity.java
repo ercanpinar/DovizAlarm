@@ -1,5 +1,8 @@
 package com.doviz.alarm;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,7 +21,7 @@ public class MainActivity extends BaseActivity {
         fm = this.getSupportFragmentManager();
         replaceFragment(new MainFragment());
     }
-    
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -39,5 +42,13 @@ public class MainActivity extends BaseActivity {
         ft = fm.beginTransaction();
         ft.replace(R.id.frame_main, fragment);
         ft.commit();
+    }
+
+    public boolean internetConnectionCheck() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 }

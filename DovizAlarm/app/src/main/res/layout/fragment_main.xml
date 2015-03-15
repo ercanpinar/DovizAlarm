@@ -211,6 +211,7 @@
         android:layout_marginRight="16dp"
         android:gravity="center"
         android:weightSum="5"
+        android:visibility="gone"
         >
 
         <RelativeLayout
