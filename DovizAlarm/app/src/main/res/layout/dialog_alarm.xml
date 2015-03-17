@@ -65,16 +65,33 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <EditText
-                    android:id="@+id/edt_dolar_alis_alarm"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:orientation="horizontal"
                     android:paddingRight="5dp"
-                    android:gravity="right|center"
-                    android:singleLine="true"
-                    android:textSize="22sp"
-                    android:digits="0123456789."
-                    android:textColor="@color/white"/>
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/edt_dolar_alis_alarm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:digits="0123456789."
+                        android:textColor="@color/white"
+                        android:layout_weight="0.80"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="TL"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:layout_weight="0.2"/>
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 
@@ -102,16 +119,34 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <EditText
-                    android:id="@+id/edt_dolar_satis_alarm"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingRight="20dp"
-                    android:gravity="right|center"
-                    android:singleLine="true"
-                    android:textSize="22sp"
-                    android:digits="0123456789."
-                    android:textColor="@color/white"/>
+                    android:orientation="horizontal"
+                    android:paddingRight="5dp"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/edt_dolar_satis_alarm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:digits="0123456789."
+                        android:textColor="@color/white"
+                        android:layout_weight="0.80"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="TL"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:layout_weight="0.2"/>
+                </LinearLayout>
+
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -167,16 +202,34 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <EditText
-                    android:id="@+id/edt_euro_alis_alarm"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:orientation="horizontal"
                     android:paddingRight="5dp"
-                    android:singleLine="true"
-                    android:gravity="right|center"
-                    android:textSize="22sp"
-                    android:digits="0123456789."
-                    android:textColor="@color/white"/>
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/edt_euro_alis_alarm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:digits="0123456789."
+                        android:textColor="@color/white"
+                        android:layout_weight="0.80"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="TL"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:layout_weight="0.2"/>
+                </LinearLayout>
+
             </LinearLayout>
         </RelativeLayout>
 
@@ -204,25 +257,53 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"/>
 
-                <EditText
-                    android:id="@+id/edt_euro_satis_alarm"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingRight="20dp"
-                    android:gravity="right|center"
-                    android:textSize="22sp"
-                    android:digits="0123456789."
-                    android:singleLine="true"
-                    android:textColor="@color/white"/>
+                    android:orientation="horizontal"
+                    android:paddingRight="5dp"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/edt_euro_satis_alarm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:digits="0123456789."
+                        android:textColor="@color/white"
+                        android:layout_weight="0.80"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="TL"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:layout_weight="0.2"/>
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/ll_euro_alis_satis_alarm"
+        android:text="Alış - Satış alarm değerlerini \n Örnek: 3 TL için 3.0000 şeklinde girmeniz gerekmektedir."
+        android:textSize="14sp"
+        android:textColor="@color/gray_more_dark_grayish_blue"/>
 
     <com.gc.materialdesign.views.LayoutRipple
         android:id="@+id/lr_dialogButton"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/ll_euro_alis_satis_alarm"
+        android:layout_below="@+id/info"
         android:background="@color/red_strong"
         android:clickable="true"
         android:layout_marginLeft="8dp"

@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -84,7 +83,7 @@ public class DovizAlarmService extends Service {
     public void refreshRequest() {
         if (internetConnectionCheck()) {
             rq = Volley.newRequestQueue(DovizAlarmService.this);
-            jReq = new JsonObjectRequest(Request.Method.POST, DOVIZ_URL, null,
+            jReq = new JsonObjectRequest(DOVIZ_URL, null,
                     new Response.Listener<JSONObject>() {
 
                         @Override
@@ -128,7 +127,7 @@ public class DovizAlarmService extends Service {
     private void alarmControl(String value, String type, boolean isAlisCheck) {
         String temp = shrp.getAlarmValue(type);
 
-        if (temp != null && !temp.equals("")) {
+        if (temp != null && !temp.equals("") && !temp.equals("0")) {
             temp = temp.replace(".", "");
             value = value.replace(".", "");
             int valueInt = 0;

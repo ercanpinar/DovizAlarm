@@ -9,10 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -59,6 +60,17 @@ public class MainFragment extends BaseFragment {
     TextView mTvAltinSatis;
     @InjectView(R.id.tv_guncelleme)
     TextView mTvGuncelleme;
+    @InjectView(R.id.tv_dolar_alis_alarm_degeri)
+    TextView mTvDolarAlisalarm;
+    @InjectView(R.id.tv_dolar_satis_alarm_degeri)
+    TextView mTvDolarSatisalarm;
+    @InjectView(R.id.tv_euro_alis_alarm_degeri)
+    TextView mTvEuroAlisalarm;
+    @InjectView(R.id.tv_euro_satis_alarm_degeri)
+    TextView mTvEuroSatisalarm;
+    @InjectView(R.id.chck_alarm)
+    CheckBox mChckAlarm;
+
     MyTimerTask yourTask;
     Timer t;
 
@@ -67,12 +79,29 @@ public class MainFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
         rq = Volley.newRequestQueue(getActivity());
-        serviceStart();
+//        serviceStart();
         refreshRequest();
         yourTask = new MyTimerTask();
         t = new Timer();
         t.scheduleAtFixedRate(yourTask, 0, 5000);
+        SharedPref shrpT = new SharedPref(getActivity());
 
+        mTvDolarAlisalarm.setText(shrpT.getAlarmValue(shrpT.DOLAR_ALIS) + " TL");
+        mTvDolarSatisalarm.setText(shrpT.getAlarmValue(shrpT.DOLAR_SATIS) + " TL");
+        mTvEuroAlisalarm.setText(shrpT.getAlarmValue(shrpT.EURO_ALIS) + " TL");
+        mTvEuroSatisalarm.setText(shrpT.getAlarmValue(shrpT.EURO_SATIS) + " TL");
+
+        if (servisCalisiyorMu())
+            mChckAlarm.setChecked(true);
+        else
+            mChckAlarm.setChecked(false);
+
+        mChckAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                serviceStartStop();
+            }
+        });
         return rootView;
     }
 
@@ -99,7 +128,6 @@ public class MainFragment extends BaseFragment {
     }
 
     private void alarmDialog() {
-        serviceStartStop();
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_alarm);
@@ -108,20 +136,51 @@ public class MainFragment extends BaseFragment {
         final EditText euroAlisAlrm = (EditText) dialog.findViewById(R.id.edt_euro_alis_alarm);
         final EditText euroSatisAlrm = (EditText) dialog.findViewById(R.id.edt_euro_satis_alarm);
         LayoutRipple dialogButton = (LayoutRipple) dialog.findViewById(R.id.lr_dialogButton);
+        SharedPref shrpT = new SharedPref(getActivity());
+
+        dolarAlisAlrm.setText(shrpT.getAlarmValue(shrpT.DOLAR_ALIS));
+        dolarSatisAlrm.setText(shrpT.getAlarmValue(shrpT.DOLAR_SATIS));
+        euroAlisAlrm.setText(shrpT.getAlarmValue(shrpT.EURO_ALIS));
+        euroSatisAlrm.setText(shrpT.getAlarmValue(shrpT.EURO_SATIS));
+//       // dolarAlisAlrm.setText(shrpT.getAlarmValue(shrpT.ALTIN_ALIS));
+//        //dolarAlisAlrm.setText(shrpT.getAlarmValue(shrpT.ALTIN_SATIS));
 
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPref shrp = new SharedPref(getActivity());
-                if (!dolarAlisAlrm.getText().toString().trim().equals(""))
-                    shrp.updateAlarm(shrp.DOLAR_ALIS, dolarAlisAlrm.getText().toString().trim());
-                if (!euroAlisAlrm.getText().toString().trim().equals(""))
-                    shrp.updateAlarm(shrp.EURO_ALIS, euroAlisAlrm.getText().toString().trim());
-                if (!dolarSatisAlrm.getText().toString().trim().equals(""))
-                    shrp.updateAlarm(shrp.DOLAR_SATIS, dolarSatisAlrm.getText().toString().trim());
-                if (!euroSatisAlrm.getText().toString().trim().equals(""))
-                    shrp.updateAlarm(shrp.EURO_SATIS, euroSatisAlrm.getText().toString().trim());
-                serviceStart();
+                boolean serviceActv = false;
+                if (!dolarAlisAlrm.getText().toString().trim().equals("") && !dolarAlisAlrm.getText().toString().trim().equals("0")) {
+                    shrp.updateAlarm(shrp.DOLAR_ALIS, addZero(dolarAlisAlrm.getText().toString().trim()));
+
+                    serviceActv = true;
+                }
+                if (!euroAlisAlrm.getText().toString().trim().equals("") && !euroAlisAlrm.getText().toString().trim().equals("0")) {
+                    shrp.updateAlarm(shrp.EURO_ALIS, addZero(euroAlisAlrm.getText().toString().trim()));
+                    serviceActv = true;
+                }
+                if (!dolarSatisAlrm.getText().toString().trim().equals("") && !dolarSatisAlrm.getText().toString().trim().equals("0")) {
+                    shrp.updateAlarm(shrp.DOLAR_SATIS, addZero(dolarSatisAlrm.getText().toString().trim()));
+                    serviceActv = true;
+                }
+                if (!euroSatisAlrm.getText().toString().trim().equals("") && !euroSatisAlrm.getText().toString().trim().equals("0")) {
+                    shrp.updateAlarm(shrp.EURO_SATIS, addZero(euroSatisAlrm.getText().toString().trim()));
+                    serviceActv = true;
+                }
+
+                if (serviceActv) {
+                    serviceStart();
+                    mChckAlarm.setChecked(true);
+                } else {
+                    mChckAlarm.setChecked(false);
+                    serviceStop();
+                }
+
+                mTvDolarAlisalarm.setText(shrp.getAlarmValue(shrp.DOLAR_ALIS) + " TL");
+                mTvDolarSatisalarm.setText(shrp.getAlarmValue(shrp.DOLAR_SATIS) + " TL");
+                mTvEuroAlisalarm.setText(shrp.getAlarmValue(shrp.EURO_ALIS) + " TL");
+                mTvEuroSatisalarm.setText(shrp.getAlarmValue(shrp.EURO_SATIS) + " TL");
+
                 dialog.dismiss();
             }
         });
@@ -129,12 +188,36 @@ public class MainFragment extends BaseFragment {
         dialog.show();
     }
 
+    private String addZero(String str) {
+        String tmp = str.replace(".", "");
+        int leng = tmp.length();
+
+        if (leng < 5) {
+            leng = 5 - leng;
+            for (int i = 0; i < leng; i++) {
+                str = str + "0";
+            }
+        }
+        int len = str.length();
+        Character[] array = new Character[len];
+        for (int i = 0; i < len; i++) {
+            array[i] = new Character(str.charAt(i));
+        }
+
+        String ret = array[0].toString() + ".";
+        for (int i = 1; i < array.length; i++) {
+            ret = ret + array[i].toString();
+        }
+
+        return ret;
+    }
+
     /**
      * Request
      */
     public void refreshRequest() {
         if (((MainActivity) getActivity()).internetConnectionCheck()) {
-            jReq = new JsonObjectRequest(Request.Method.POST, DOVIZ_URL, null,
+            jReq = new JsonObjectRequest(DOVIZ_URL, null,
                     new Response.Listener<JSONObject>() {
 
                         @Override
@@ -219,10 +302,28 @@ public class MainFragment extends BaseFragment {
     public void serviceStartStop() {
         if (servisCalisiyorMu()) {
             getActivity().stopService(new Intent(getActivity(), DovizAlarmService.class));
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "Alarm durduruldu.",
+                    Style.INFO).show();
         } else
 
         {
             getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "Alarm aktif edildi.",
+                    Style.INFO).show();
+        }
+    }
+
+    public void serviceStop() {
+        if (servisCalisiyorMu()) {
+            getActivity().stopService(new Intent(getActivity(), DovizAlarmService.class));
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "Alarm durduruldu.",
+                    Style.INFO).show();
         }
     }
 }

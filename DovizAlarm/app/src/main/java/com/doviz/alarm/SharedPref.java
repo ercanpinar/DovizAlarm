@@ -11,6 +11,8 @@ public class SharedPref {
     public String DOLAR_ALIS = "DOLAR_ALIS";
     public String EURO_SATIS = "EURO_SATIS";
     public String EURO_ALIS = "EURO_ALIS";
+    public String ALTIN_SATIS = "ALTIN_SATIS";
+    public String ALTIN_ALIS = "ALTIN_ALIS";
     Context context;
     private String SHARED_PREFS_FILE_NAME = "doviz_alarm_shared_prefs";
 
@@ -27,8 +29,7 @@ public class SharedPref {
 
     public void updateAlarm(String kurType, String value) {
         SharedPreferences.Editor editor = getPrefs().edit();
-
-        if (!value.equals("")) {
+        if (!value.equals("") && !value.equals("0")) {
             editor.putString(kurType, value);
             editor.commit();
         } else {
@@ -39,7 +40,8 @@ public class SharedPref {
 
     public String getAlarmValue(String kurType) {
         String data = getPrefs().getString(kurType, "");
-
+        if (data == null || data.equals(""))
+            data = "0";
         return data;
     }
 }
