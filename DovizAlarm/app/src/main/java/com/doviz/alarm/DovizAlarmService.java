@@ -127,7 +127,7 @@ public class DovizAlarmService extends Service {
     private void alarmControl(String value, String type, boolean isAlisCheck) {
         String temp = shrp.getAlarmValue(type);
 
-        if (temp != null && !temp.equals("") && !temp.equals("0")) {
+        if (temp != null && !temp.equals("") && !temp.equals("0") && !temp.equals("0.0000")) {
             temp = temp.replace(".", "");
             value = value.replace(".", "");
             int valueInt = 0;

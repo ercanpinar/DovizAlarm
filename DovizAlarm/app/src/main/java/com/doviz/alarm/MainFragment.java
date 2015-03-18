@@ -150,22 +150,25 @@ public class MainFragment extends BaseFragment {
             public void onClick(View v) {
                 SharedPref shrp = new SharedPref(getActivity());
                 boolean serviceActv = false;
-                if (!dolarAlisAlrm.getText().toString().trim().equals("") && !dolarAlisAlrm.getText().toString().trim().equals("0")) {
-                    shrp.updateAlarm(shrp.DOLAR_ALIS, addZero(dolarAlisAlrm.getText().toString().trim()));
-
-                    serviceActv = true;
+                if (stringIsNotEmptyAndZero(dolarAlisAlrm)) {
+                    shrp.updateAlarm(shrp.DOLAR_ALIS, addZero(dolarAlisAlrm.getText().toString()));
+                    if (!addZero(dolarAlisAlrm.getText().toString()).equals("0.0000"))
+                        serviceActv = true;
                 }
-                if (!euroAlisAlrm.getText().toString().trim().equals("") && !euroAlisAlrm.getText().toString().trim().equals("0")) {
-                    shrp.updateAlarm(shrp.EURO_ALIS, addZero(euroAlisAlrm.getText().toString().trim()));
-                    serviceActv = true;
+                if (stringIsNotEmptyAndZero(dolarSatisAlrm)) {
+                    shrp.updateAlarm(shrp.DOLAR_SATIS, addZero(dolarSatisAlrm.getText().toString()));
+                    if (!addZero(dolarSatisAlrm.getText().toString()).equals("0.0000"))
+                        serviceActv = true;
                 }
-                if (!dolarSatisAlrm.getText().toString().trim().equals("") && !dolarSatisAlrm.getText().toString().trim().equals("0")) {
-                    shrp.updateAlarm(shrp.DOLAR_SATIS, addZero(dolarSatisAlrm.getText().toString().trim()));
-                    serviceActv = true;
+                if (stringIsNotEmptyAndZero(euroAlisAlrm)) {
+                    shrp.updateAlarm(shrp.EURO_ALIS, addZero(euroAlisAlrm.getText().toString()));
+                    if (!addZero(euroAlisAlrm.getText().toString()).equals("0.0000"))
+                        serviceActv = true;
                 }
-                if (!euroSatisAlrm.getText().toString().trim().equals("") && !euroSatisAlrm.getText().toString().trim().equals("0")) {
-                    shrp.updateAlarm(shrp.EURO_SATIS, addZero(euroSatisAlrm.getText().toString().trim()));
-                    serviceActv = true;
+                if (stringIsNotEmptyAndZero(euroSatisAlrm)) {
+                    shrp.updateAlarm(shrp.EURO_SATIS, addZero(euroSatisAlrm.getText().toString()));
+                    if (!addZero(euroSatisAlrm.getText().toString()).equals("0.0000"))
+                        serviceActv = true;
                 }
 
                 if (serviceActv) {
@@ -188,6 +191,14 @@ public class MainFragment extends BaseFragment {
         dialog.show();
     }
 
+    private boolean stringIsNotEmptyAndZero(EditText editText) {
+
+        if (!editText.getText().toString().trim().equals("") && !editText.getText().toString().trim().equals("0"))
+            return true;
+        else
+            return false;
+    }
+
     private String addZero(String str) {
         String tmp = str.replace(".", "");
         int leng = tmp.length();
@@ -195,13 +206,13 @@ public class MainFragment extends BaseFragment {
         if (leng < 5) {
             leng = 5 - leng;
             for (int i = 0; i < leng; i++) {
-                str = str + "0";
+                tmp = tmp + "0";
             }
         }
-        int len = str.length();
+        int len = tmp.length();
         Character[] array = new Character[len];
         for (int i = 0; i < len; i++) {
-            array[i] = new Character(str.charAt(i));
+            array[i] = new Character(tmp.charAt(i));
         }
 
         String ret = array[0].toString() + ".";
