@@ -601,7 +601,7 @@
             android:paddingRight="20dp"
             android:gravity="center"
             android:textSize="10sp"
-            android:text="Batarya kullanımı açısından güncelleme sıklığı 30dk olarak ayarlanmıştır.\n İsteğinize bağlı olarak değiştirebilirsiniz."
+            android:text="Alarm kontrol aralığı \n Batarya kullanımı açısından güncelleme sıklığı 30dk olarak ayarlanmıştır.\n İsteğinize bağlı olarak değiştirebilirsiniz."
             android:textStyle="bold"
             android:textColor="@color/gray_dark_grayish_blue"/>
     </LinearLayout>

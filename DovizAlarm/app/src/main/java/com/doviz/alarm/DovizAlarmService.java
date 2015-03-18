@@ -35,7 +35,7 @@ public class DovizAlarmService extends Service {
     Handler handler;
     SharedPref shrp;
 
-    final static long LOOP_TIME = 20000;
+    public static long LOOP_TIME = 18000;
 
     @Override
     public IBinder onBind(Intent intent) {

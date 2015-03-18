@@ -70,7 +70,14 @@ public class MainFragment extends BaseFragment {
     TextView mTvEuroSatisalarm;
     @InjectView(R.id.chck_alarm)
     CheckBox mChckAlarm;
-
+    @InjectView(R.id.chck_alarm_time_five_min)
+    CheckBox mChckAlarm5dk;
+    @InjectView(R.id.chck_alarm_time_fifty_min)
+    CheckBox mChckAlarm15dk;
+    @InjectView(R.id.chck_alarm_time_thirty_min)
+    CheckBox mChckAlarm30dk;
+    @InjectView(R.id.chck_alarm_time_one_hour)
+    CheckBox mChckAlarm60dk;
     MyTimerTask yourTask;
     Timer t;
 
@@ -79,7 +86,6 @@ public class MainFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
         rq = Volley.newRequestQueue(getActivity());
-//        serviceStart();
         refreshRequest();
         yourTask = new MyTimerTask();
         t = new Timer();
@@ -99,7 +105,76 @@ public class MainFragment extends BaseFragment {
         mChckAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                serviceStartStop();
+                if (isChecked) {
+                    if (mChckAlarm5dk.isChecked() || mChckAlarm15dk.isChecked() || mChckAlarm30dk.isChecked() || mChckAlarm60dk.isChecked())
+                        serviceStart();
+                    else
+                        mChckAlarm.setChecked(false);
+                } else {
+                    serviceStop();
+                }
+            }
+        });
+        //1sn=1000ms suanda 5dk=300sn icin 3sn olacak /100 seklinde olacak.
+        if (DovizAlarmService.LOOP_TIME == 3000) {
+            mChckAlarm5dk.setChecked(true);
+        } else if (DovizAlarmService.LOOP_TIME == 9000) {
+            mChckAlarm15dk.setChecked(true);
+        } else if (DovizAlarmService.LOOP_TIME == 36000) {
+            mChckAlarm60dk.setChecked(true);
+        } else {
+            mChckAlarm30dk.setChecked(true);
+        }
+        mChckAlarm5dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    DovizAlarmService.LOOP_TIME = 3000;
+                    mChckAlarm15dk.setChecked(false);
+                    mChckAlarm30dk.setChecked(false);
+                    mChckAlarm60dk.setChecked(false);
+                } else {
+                    mChckAlarm.setChecked(false);
+                }
+            }
+        });
+        mChckAlarm15dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    DovizAlarmService.LOOP_TIME = 9000;
+                    mChckAlarm5dk.setChecked(false);
+                    mChckAlarm30dk.setChecked(false);
+                    mChckAlarm60dk.setChecked(false);
+                } else {
+                    mChckAlarm.setChecked(false);
+                }
+            }
+        });
+        mChckAlarm30dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    DovizAlarmService.LOOP_TIME = 18000;
+                    mChckAlarm5dk.setChecked(false);
+                    mChckAlarm15dk.setChecked(false);
+                    mChckAlarm60dk.setChecked(false);
+                } else {
+                    mChckAlarm.setChecked(false);
+                }
+            }
+        });
+        mChckAlarm60dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    DovizAlarmService.LOOP_TIME = 36000;
+                    mChckAlarm5dk.setChecked(false);
+                    mChckAlarm15dk.setChecked(false);
+                    mChckAlarm30dk.setChecked(false);
+                } else {
+                    mChckAlarm.setChecked(false);
+                }
             }
         });
         return rootView;
@@ -292,6 +367,10 @@ public class MainFragment extends BaseFragment {
 
     private void serviceStart() {
         if (!servisCalisiyorMu()) {
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "Alarm aktif edildi.",
+                    Style.INFO).show();
             getActivity().startService(new Intent(getActivity(), DovizAlarmService.class));
         }
     }
