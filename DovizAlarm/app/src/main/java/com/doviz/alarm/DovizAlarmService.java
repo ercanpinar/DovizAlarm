@@ -1,13 +1,13 @@
 package com.doviz.alarm;
 
-import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -34,8 +34,9 @@ public class DovizAlarmService extends Service {
     Timer timer;
     Handler handler;
     SharedPref shrp;
+    String notficationMessage = "";
 
-    public static long LOOP_TIME = 18000;
+    public static long LOOP_TIME = 1800000;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -101,10 +102,13 @@ public class DovizAlarmService extends Service {
                                 }
                                 data = gson.fromJson(tempStr, type);
                                 if (data != null) {
+                                    notficationMessage = "";
                                     alarmControl(data.dolar, shrp.DOLAR_ALIS, true);
                                     alarmControl(data.dolar2, shrp.DOLAR_SATIS, false);
                                     alarmControl(data.euro, shrp.EURO_ALIS, true);
                                     alarmControl(data.euro2, shrp.EURO_SATIS, false);
+                                    if (!notficationMessage.equals(""))
+                                        notificationSend(notficationMessage);
                                 }
                             }
                         }
@@ -136,60 +140,42 @@ public class DovizAlarmService extends Service {
             valueInt = Integer.parseInt(value);
             if (isAlisCheck) {
                 if (valueInt >= tempInt) {
-                    Log.i("****alis* ALARM DEGERİ:", temp);
-                    Log.i("****alis*SERVİS DEGRİ: ", value);
-
                     if (type.equals(shrp.DOLAR_ALIS)) {
-                        String str = getResources().getString(R.string.default_max_alarm);
-                        Intent intent = new Intent(DovizAlarmService.this, DovizAlarmReceiver.class);
-                        Bundle bundle = new Bundle();
-                        str = getResources().getString(R.string.dolar_max_alarm);
-                        bundle.putString("message", str);
-                        intent.putExtras(bundle);
-                        PendingIntent pin = PendingIntent.getBroadcast(DovizAlarmService.this, 12, intent, 0);
-                        AlarmManager alarmManager = (AlarmManager) DovizAlarmService.this.getSystemService(ALARM_SERVICE);
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pin);
+                        if (!notficationMessage.equals(""))
+                            notficationMessage = notficationMessage + ",";
+                        notficationMessage = notficationMessage + getResources().getString(R.string.dolar_max_alarm);
                     } else if (type.equals(shrp.EURO_ALIS)) {
-                        String str2 = getResources().getString(R.string.default_max_alarm);
-                        Intent intent2 = new Intent(DovizAlarmService.this, DovizAlarmReceiver.class);
-                        Bundle bundle2 = new Bundle();
-                        str2 = getResources().getString(R.string.euro_max_alarm);
-                        bundle2.putString("message", str2);
-                        intent2.putExtras(bundle2);
-                        PendingIntent pin2 = PendingIntent.getBroadcast(DovizAlarmService.this, 13, intent2, 0);
-                        AlarmManager alarmManager2 = (AlarmManager) DovizAlarmService.this.getSystemService(ALARM_SERVICE);
-                        alarmManager2.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pin2);
+                        if (!notficationMessage.equals(""))
+                            notficationMessage = notficationMessage + ",";
+                        notficationMessage = notficationMessage + getResources().getString(R.string.euro_max_alarm);
                     }
                 }
             } else {
                 if (valueInt <= tempInt) {
-                    Log.i("****SATİS*ALARM DEGERİ:", temp);
-                    Log.i("****SATİS*SERVS DEGRİ: ", value);
-
                     if (type.equals(shrp.DOLAR_SATIS)) {
-                        Intent intent3 = new Intent(DovizAlarmService.this, DovizAlarmReceiver.class);
-                        Bundle bundle3 = new Bundle();
-                        String str3 = getResources().getString(R.string.default_min_alarm);
-                        str3 = getResources().getString(R.string.dolar_min_alarm);
-                        bundle3.putString("message", str3);
-                        intent3.putExtras(bundle3);
-                        PendingIntent pin3 = PendingIntent.getBroadcast(DovizAlarmService.this, 14, intent3, 0);
-                        AlarmManager alarmManager3 = (AlarmManager) DovizAlarmService.this.getSystemService(ALARM_SERVICE);
-                        alarmManager3.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pin3);
+                        if (!notficationMessage.equals(""))
+                            notficationMessage = notficationMessage + ",";
+                        notficationMessage = notficationMessage + getResources().getString(R.string.dolar_min_alarm);
                     } else if (type.equals(shrp.EURO_SATIS)) {
-                        Intent intent4 = new Intent(DovizAlarmService.this, DovizAlarmReceiver.class);
-                        Bundle bundle4 = new Bundle();
-                        String str4 = getResources().getString(R.string.default_min_alarm);
-                        str4 = getResources().getString(R.string.euro_min_alarm);
-                        bundle4.putString("message", str4);
-                        intent4.putExtras(bundle4);
-                        PendingIntent pin4 = PendingIntent.getBroadcast(DovizAlarmService.this, 15, intent4, 0);
-                        AlarmManager alarmManager4 = (AlarmManager) DovizAlarmService.this.getSystemService(ALARM_SERVICE);
-                        alarmManager4.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pin4);
+                        if (!notficationMessage.equals(""))
+                            notficationMessage = notficationMessage + ",";
+                        notficationMessage = notficationMessage + getResources().getString(R.string.euro_min_alarm);
                     }
                 }
             }
         }
+    }
+
+    private void notificationSend(String message) {
+        NotificationManager NM;
+        NM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notify = new Notification(android.R.drawable.ic_lock_idle_alarm, getResources().getString(R.string.app_name), System.currentTimeMillis());
+        PendingIntent pending = PendingIntent.getActivity(
+                getApplicationContext(), 0, new Intent(), 0);
+        notify.defaults |= Notification.DEFAULT_SOUND;
+        notify.defaults |= Notification.DEFAULT_VIBRATE;
+        notify.setLatestEventInfo(getApplicationContext(), getResources().getString(R.string.notf_title), message, pending);
+        NM.notify(0, notify);
     }
 
     public boolean internetConnectionCheck() {

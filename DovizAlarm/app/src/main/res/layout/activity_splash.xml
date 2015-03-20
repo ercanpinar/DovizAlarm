@@ -3,14 +3,29 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="center"
-              android:background="@color/white">
+              android:orientation="vertical"
+              android:background="@drawable/background">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/alarm"
+        android:padding="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="DOVİZ-ALTIN ALARM"
-        android:textSize="24sp"
-        android:textColor="@color/cyan_strong"
+        android:text="DÖVİZ ALARM"
+        android:textSize="34sp"
+        android:paddingTop="10dp"
+        android:textColor="@color/red_strong"
         android:id="@+id/textView"/>
+
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:id="@+id/progressBarCircularIndeterminate"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:paddingTop="30dp"
+        android:background="#1E88E5"/>
 </LinearLayout>

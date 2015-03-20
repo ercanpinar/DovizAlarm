@@ -295,7 +295,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/ll_euro_alis_satis_alarm"
-        android:text="Alış - Satış alarm değerlerini \n Örnek: 3 TL için 3.0000 şeklinde girmeniz gerekmektedir."
+        android:text="@string/dialog_info_message"
         android:textSize="14sp"
         android:textColor="@color/gray_more_dark_grayish_blue"/>
 

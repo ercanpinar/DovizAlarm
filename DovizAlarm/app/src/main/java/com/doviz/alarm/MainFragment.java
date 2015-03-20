@@ -89,7 +89,7 @@ public class MainFragment extends BaseFragment {
         refreshRequest();
         yourTask = new MyTimerTask();
         t = new Timer();
-        t.scheduleAtFixedRate(yourTask, 0, 5000);
+        t.scheduleAtFixedRate(yourTask, 0, 30000);
         SharedPref shrpT = new SharedPref(getActivity());
 
         mTvDolarAlisalarm.setText(shrpT.getAlarmValue(shrpT.DOLAR_ALIS) + " TL");
@@ -116,11 +116,11 @@ public class MainFragment extends BaseFragment {
             }
         });
         //1sn=1000ms suanda 5dk=300sn icin 3sn olacak /100 seklinde olacak.
-        if (DovizAlarmService.LOOP_TIME == 3000) {
+        if (DovizAlarmService.LOOP_TIME == 300000) {
             mChckAlarm5dk.setChecked(true);
-        } else if (DovizAlarmService.LOOP_TIME == 9000) {
+        } else if (DovizAlarmService.LOOP_TIME == 900000) {
             mChckAlarm15dk.setChecked(true);
-        } else if (DovizAlarmService.LOOP_TIME == 36000) {
+        } else if (DovizAlarmService.LOOP_TIME == 3600000) {
             mChckAlarm60dk.setChecked(true);
         } else {
             mChckAlarm30dk.setChecked(true);
@@ -129,7 +129,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    DovizAlarmService.LOOP_TIME = 3000;
+                    DovizAlarmService.LOOP_TIME = 300000;
                     mChckAlarm15dk.setChecked(false);
                     mChckAlarm30dk.setChecked(false);
                     mChckAlarm60dk.setChecked(false);
@@ -142,7 +142,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    DovizAlarmService.LOOP_TIME = 9000;
+                    DovizAlarmService.LOOP_TIME = 900000;
                     mChckAlarm5dk.setChecked(false);
                     mChckAlarm30dk.setChecked(false);
                     mChckAlarm60dk.setChecked(false);
@@ -155,7 +155,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    DovizAlarmService.LOOP_TIME = 18000;
+                    DovizAlarmService.LOOP_TIME = 1800000;
                     mChckAlarm5dk.setChecked(false);
                     mChckAlarm15dk.setChecked(false);
                     mChckAlarm60dk.setChecked(false);
@@ -168,7 +168,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    DovizAlarmService.LOOP_TIME = 36000;
+                    DovizAlarmService.LOOP_TIME = 3600000;
                     mChckAlarm5dk.setChecked(false);
                     mChckAlarm15dk.setChecked(false);
                     mChckAlarm30dk.setChecked(false);

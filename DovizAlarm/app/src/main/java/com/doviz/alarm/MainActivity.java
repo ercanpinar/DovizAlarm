@@ -51,4 +51,10 @@ public class MainActivity extends BaseActivity {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.wait, R.anim.abc_fade_out);
+    }
 }
