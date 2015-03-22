@@ -295,8 +295,8 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/ll_euro_alis_satis_alarm"
-        android:text="@string/dialog_info_message"
         android:textSize="14sp"
+        android:text="@string/dialog_info_message"
         android:textColor="@color/gray_more_dark_grayish_blue"/>
 
     <com.gc.materialdesign.views.LayoutRipple

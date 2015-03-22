@@ -7,5 +7,6 @@
     <string name="euro_max_alarm">Euro Alış</string>
     <string name="default_min_alarm">Alış için belirtilen alarm değerine eşit veya üzerinde.</string>
     <string name="default_max_alarm">Satış için belirtilen alarm değerine eşit veya altında.</string>
-    <string name="dialog_info_message">Alış - Satış alarm değerlerini \n Örnek: 3 TL için 3.0000 şeklinde girmeniz gerekmektedir.\n Önceden girmiş olduğunuz bir alarmı iptal etmek için var olan değeri silip yerine 0.0000 yazmanız gerekmektedir.</string>
+    <string name="dialog_info_message">Alış - Satış alarm değerlerini \n Örnek: 3 TL için 3.0000 şeklinde girmeniz gerekmektedir.\n Önceden girmiş olduğunuz bir alarmı iptal etmek için var olan değeri silip yerine 0.0000 yazıp kaydetmeniz gerekmektedir.</string>
+    
 </resources>

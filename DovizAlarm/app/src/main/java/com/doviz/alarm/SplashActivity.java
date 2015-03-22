@@ -11,7 +11,7 @@ public class SplashActivity extends BaseActivity {
     /**
      * Duration of wait *
      */
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     Intent mainIntent = null;
 

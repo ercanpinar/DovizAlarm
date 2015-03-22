@@ -13,6 +13,7 @@ public class SharedPref {
     public String EURO_ALIS = "EURO_ALIS";
     public String ALTIN_SATIS = "ALTIN_SATIS";
     public String ALTIN_ALIS = "ALTIN_ALIS";
+    public String ALARM_SURE = "ALARM_SURE";
     Context context;
     private String SHARED_PREFS_FILE_NAME = "doviz_alarm_shared_prefs";
 
@@ -36,6 +37,21 @@ public class SharedPref {
             editor.remove(kurType);
             editor.commit();
         }
+    }
+
+    public void updateAlarmTime(String value) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        if (!value.equals("") && !value.equals("0")) {
+            editor.putString(ALARM_SURE, value);
+            editor.commit();
+        }
+    }
+
+    public String getAlarmTime() {
+        String data = getPrefs().getString(ALARM_SURE, "");
+        if (data == null || data.equals(""))
+            data = "1800000";
+        return data;
     }
 
     public String getAlarmValue(String kurType) {

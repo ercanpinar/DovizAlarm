@@ -1,13 +1,13 @@
 package com.doviz.alarm;
 
-import android.app.Notification;
-import android.app.NotificationManager;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -49,7 +49,7 @@ public class DovizAlarmService extends Service {
         shrp = new SharedPref(getApplicationContext());
         timer = new Timer();
         handler = new Handler(Looper.getMainLooper());
-
+        LOOP_TIME = Long.valueOf(shrp.getAlarmTime());
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -108,7 +108,7 @@ public class DovizAlarmService extends Service {
                                     alarmControl(data.euro, shrp.EURO_ALIS, true);
                                     alarmControl(data.euro2, shrp.EURO_SATIS, false);
                                     if (!notficationMessage.equals(""))
-                                        notificationSend(notficationMessage);
+                                        callAlarmManager(notficationMessage);
                                 }
                             }
                         }
@@ -166,16 +166,15 @@ public class DovizAlarmService extends Service {
         }
     }
 
-    private void notificationSend(String message) {
-        NotificationManager NM;
-        NM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notify = new Notification(android.R.drawable.ic_lock_idle_alarm, getResources().getString(R.string.app_name), System.currentTimeMillis());
-        PendingIntent pending = PendingIntent.getActivity(
-                getApplicationContext(), 0, new Intent(), 0);
-        notify.defaults |= Notification.DEFAULT_SOUND;
-        notify.defaults |= Notification.DEFAULT_VIBRATE;
-        notify.setLatestEventInfo(getApplicationContext(), getResources().getString(R.string.notf_title), message, pending);
-        NM.notify(0, notify);
+    private void callAlarmManager(String message) {
+
+        Intent intent = new Intent(DovizAlarmService.this, DovizAlarmReceiver.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("message", message);
+        intent.putExtras(bundle);
+        PendingIntent pin = PendingIntent.getBroadcast(DovizAlarmService.this, 12, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) DovizAlarmService.this.getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pin);
     }
 
     public boolean internetConnectionCheck() {
