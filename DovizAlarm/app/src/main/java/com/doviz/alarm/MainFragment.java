@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -19,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.doviz.alarm.bus.MainEvent;
 import com.doviz.alarm.response.DovizResponse;
 import com.gc.materialdesign.views.LayoutRipple;
 import com.google.gson.Gson;
@@ -29,12 +33,15 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -58,16 +65,6 @@ public class MainFragment extends BaseFragment {
     TextView mTvAltinAlis;
     @InjectView(R.id.tv_altin_satis)
     TextView mTvAltinSatis;
-    @InjectView(R.id.tv_guncelleme)
-    TextView mTvGuncelleme;
-    @InjectView(R.id.tv_dolar_alis_alarm_degeri)
-    TextView mTvDolarAlisalarm;
-    @InjectView(R.id.tv_dolar_satis_alarm_degeri)
-    TextView mTvDolarSatisalarm;
-    @InjectView(R.id.tv_euro_alis_alarm_degeri)
-    TextView mTvEuroAlisalarm;
-    @InjectView(R.id.tv_euro_satis_alarm_degeri)
-    TextView mTvEuroSatisalarm;
     @InjectView(R.id.chck_alarm)
     CheckBox mChckAlarm;
     @InjectView(R.id.chck_alarm_time_five_min)
@@ -76,26 +73,30 @@ public class MainFragment extends BaseFragment {
     CheckBox mChckAlarm15dk;
     @InjectView(R.id.chck_alarm_time_thirty_min)
     CheckBox mChckAlarm30dk;
-    @InjectView(R.id.chck_alarm_time_one_hour)
-    CheckBox mChckAlarm60dk;
+    @InjectView(R.id.lr_guncelle_button)
+    LayoutRipple mLrGuncelle;
+    @InjectView(R.id.sp_alarm_time)
+    Spinner mSpAlarmMinuteList;
+
     MyTimerTask yourTask;
     Timer t;
+    SharedPref shrpT;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
+        EventBus.getDefault().register(this);
         rq = Volley.newRequestQueue(getActivity());
-        refreshRequest();
+        shrpT = new SharedPref(getActivity());
+
+        if (shrpT.getKaynak().equals("1"))
+            new ParseUrlAsyncTask().execute(new String[]{"http://kur.doviz.com/serbest-piyasa/"});
+        else
+            refreshRequest();
         yourTask = new MyTimerTask();
         t = new Timer();
-        t.scheduleAtFixedRate(yourTask, 0, 30000);
-        SharedPref shrpT = new SharedPref(getActivity());
-
-        mTvDolarAlisalarm.setText(shrpT.getAlarmValue(shrpT.DOLAR_ALIS) + " TL");
-        mTvDolarSatisalarm.setText(shrpT.getAlarmValue(shrpT.DOLAR_SATIS) + " TL");
-        mTvEuroAlisalarm.setText(shrpT.getAlarmValue(shrpT.EURO_ALIS) + " TL");
-        mTvEuroSatisalarm.setText(shrpT.getAlarmValue(shrpT.EURO_SATIS) + " TL");
+        t.scheduleAtFixedRate(yourTask, 0, 10000);
 
         if (servisCalisiyorMu())
             mChckAlarm.setChecked(true);
@@ -106,82 +107,44 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (mChckAlarm5dk.isChecked() || mChckAlarm15dk.isChecked() || mChckAlarm30dk.isChecked() || mChckAlarm60dk.isChecked())
-                        serviceStart();
-                    else
-                        mChckAlarm.setChecked(false);
+                    serviceStart();
                 } else {
                     serviceStop();
                 }
             }
         });
-        if (DovizAlarmService.LOOP_TIME == 300000) {
-            mChckAlarm5dk.setChecked(true);
-        } else if (DovizAlarmService.LOOP_TIME == 900000) {
-            mChckAlarm15dk.setChecked(true);
-        } else if (DovizAlarmService.LOOP_TIME == 3600000) {
-            mChckAlarm60dk.setChecked(true);
-        } else {
-            mChckAlarm30dk.setChecked(true);
-        }
-
-        mChckAlarm5dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    new SharedPref(getActivity()).updateAlarmTime("300000");
-                    mChckAlarm15dk.setChecked(false);
-                    mChckAlarm30dk.setChecked(false);
-                    mChckAlarm60dk.setChecked(false);
-                } else {
-                    mChckAlarm.setChecked(false);
-                }
-            }
-        });
-        mChckAlarm15dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-//                    DovizAlarmService.LOOP_TIME = 900000;
-                    new SharedPref(getActivity()).updateAlarmTime("900000");
-
-                    mChckAlarm5dk.setChecked(false);
-                    mChckAlarm30dk.setChecked(false);
-                    mChckAlarm60dk.setChecked(false);
-                } else {
-                    mChckAlarm.setChecked(false);
-                }
-            }
-        });
-        mChckAlarm30dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    new SharedPref(getActivity()).updateAlarmTime("1800000");
-
-                    mChckAlarm5dk.setChecked(false);
-                    mChckAlarm15dk.setChecked(false);
-                    mChckAlarm60dk.setChecked(false);
-                } else {
-                    mChckAlarm.setChecked(false);
-                }
-            }
-        });
-        mChckAlarm60dk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    new SharedPref(getActivity()).updateAlarmTime("3600000");
-
-                    mChckAlarm5dk.setChecked(false);
-                    mChckAlarm15dk.setChecked(false);
-                    mChckAlarm30dk.setChecked(false);
-                } else {
-                    mChckAlarm.setChecked(false);
-                }
-            }
-        });
+        createSpinner();
         return rootView;
+    }
+
+    private void createSpinner() {
+        List<String> list = new ArrayList<>();
+        String dk = " dk.";
+        for (int i = 1; i < 61; i++) {
+            list.add(i + dk);
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpAlarmMinuteList.setAdapter(dataAdapter);
+        mSpAlarmMinuteList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int pos, long id) {
+                shrpT.updateAlarmTime(String.valueOf((pos + 1) * 60000));
+                DovizAlarmService.LOOP_TIME = (pos + 1) * 60000;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+
+        lastSelectSpinner();
+    }
+
+    private void lastSelectSpinner() {
+        mSpAlarmMinuteList.setSelection(((Integer.parseInt(String.valueOf(shrpT.getAlarmTime())) / 60000) - 1));
     }
 
     @Override
@@ -193,14 +156,47 @@ public class MainFragment extends BaseFragment {
     public void onDestroyView() {
         t.cancel();
         Crouton.cancelAllCroutons();
+        EventBus.getDefault().unregister(this);
         ButterKnife.reset(this);
         this.rq.cancelAll(this);
         super.onDestroyView();
     }
 
     /**
+     * Eventbus
+     */
+    public void onEvent(MainEvent event) {
+
+        String[] deger = event.getResponse().split(":");
+        if (deger.length == 4) {
+            mTvDolarAlis.setText(addZero(deger[0]) + " TL");
+            mTvDolarSatis.setText(addZero(deger[1]) + " TL");
+            mTvEuroAlis.setText(addZero(deger[2]) + " TL");
+            mTvEuroSatis.setText(addZero(deger[3]) + " TL");
+        } else {
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(
+                    MainFragment.this.getActivity(), "Bir sorun oluştu.",
+                    Style.ALERT).show();
+        }
+    }
+
+    /**
      * OnClick
      */
+    @OnClick(R.id.lr_guncelle_button)
+    public void guncelleBtnClick(View view) {
+        Crouton.cancelAllCroutons();
+        Crouton.makeText(
+                MainFragment.this.getActivity(), "Güncelleniyor.",
+                Style.INFO).show();
+
+        if (shrpT.getKaynak().equals("1"))
+            new ParseUrlAsyncTask().execute(new String[]{"http://kur.doviz.com/serbest-piyasa/"});
+        else
+            refreshRequest();
+    }
+
     @OnClick(R.id.lr_alarm)
     public void alarmBtnClick(View view) {
         alarmDialog();
@@ -256,11 +252,6 @@ public class MainFragment extends BaseFragment {
                     serviceStop();
                 }
 
-                mTvDolarAlisalarm.setText(shrp.getAlarmValue(shrp.DOLAR_ALIS) + " TL");
-                mTvDolarSatisalarm.setText(shrp.getAlarmValue(shrp.DOLAR_SATIS) + " TL");
-                mTvEuroAlisalarm.setText(shrp.getAlarmValue(shrp.EURO_ALIS) + " TL");
-                mTvEuroSatisalarm.setText(shrp.getAlarmValue(shrp.EURO_SATIS) + " TL");
-
                 dialog.dismiss();
             }
         });
@@ -277,6 +268,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private String addZero(String str) {
+
         String tmp = str.replace(".", "");
         int leng = tmp.length();
 
@@ -285,6 +277,8 @@ public class MainFragment extends BaseFragment {
             for (int i = 0; i < leng; i++) {
                 tmp = tmp + "0";
             }
+        } else {
+            tmp = tmp.substring(0, 5);
         }
         int len = tmp.length();
         Character[] array = new Character[len];
@@ -327,7 +321,6 @@ public class MainFragment extends BaseFragment {
                                     mTvDolarSatis.setText(data.dolar2 + " TL");
                                     mTvEuroAlis.setText(data.euro + " TL");
                                     mTvEuroSatis.setText(data.euro2 + " TL");
-                                    mTvGuncelleme.setText(data.guncelleme);
                                 } else {
                                     Crouton.cancelAllCroutons();
                                     Crouton.makeText(
@@ -363,7 +356,10 @@ public class MainFragment extends BaseFragment {
 
     private class MyTimerTask extends TimerTask {
         public void run() {
-            refreshRequest();
+            if (shrpT.getKaynak().equals("1"))
+                new ParseUrlAsyncTask().execute(new String[]{"http://kur.doviz.com/serbest-piyasa/"});
+            else
+                refreshRequest();
         }
     }
 

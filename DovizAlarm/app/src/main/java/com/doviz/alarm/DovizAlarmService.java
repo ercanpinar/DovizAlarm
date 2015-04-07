@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,6 +24,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
@@ -36,7 +41,7 @@ public class DovizAlarmService extends Service {
     SharedPref shrp;
     String notficationMessage = "";
 
-    public static long LOOP_TIME = 1800000;
+    public static long LOOP_TIME = 60000;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -62,7 +67,10 @@ public class DovizAlarmService extends Service {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                refreshRequest();
+                if (shrp.getKaynak().equals("1"))
+                    new ParseUrlAsyncTaskInr().execute(new String[]{"http://kur.doviz.com/serbest-piyasa/"});
+                else
+                    refreshRequest();
             }
         });
     }
@@ -166,6 +174,33 @@ public class DovizAlarmService extends Service {
         }
     }
 
+    private String addZero(String str) {
+
+        String tmp = str.replace(".", "");
+        int leng = tmp.length();
+
+        if (leng < 5) {
+            leng = 5 - leng;
+            for (int i = 0; i < leng; i++) {
+                tmp = tmp + "0";
+            }
+        } else {
+            tmp = tmp.substring(0, 5);
+        }
+        int len = tmp.length();
+        Character[] array = new Character[len];
+        for (int i = 0; i < len; i++) {
+            array[i] = new Character(tmp.charAt(i));
+        }
+
+        String ret = array[0].toString() + ".";
+        for (int i = 1; i < array.length; i++) {
+            ret = ret + array[i].toString();
+        }
+
+        return ret;
+    }
+
     private void callAlarmManager(String message) {
 
         Intent intent = new Intent(DovizAlarmService.this, DovizAlarmReceiver.class);
@@ -183,5 +218,94 @@ public class DovizAlarmService extends Service {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
+    }
+
+    private class ParseUrlAsyncTaskInr extends AsyncTask<String, Void, String> {
+        String dolarAl, dolarSat;
+        String euroAl, euroSat;
+        //    String altinAl, altinSat;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            StringBuffer buffer = new StringBuffer();
+            try {
+                Document doc = Jsoup.connect(strings[0]).get();
+                /**
+                 * Dolar-Euro
+                 * */
+                Elements divs = doc.select("div");
+
+                for (Element div : divs) {
+                    if (div.attr("class").equals("cevirici-select")) {
+                        Elements lis = div.select("ul").select("li").select("ul");
+                        for (Element li : lis) {
+
+                            if (li.attr("data-code").equals("USD")) {
+                                dolarAl = li.attr("data-buying");
+                                buffer.append(dolarAl + ":");
+
+                                dolarSat = li.attr("data-selling");
+                                buffer.append(dolarSat + ":");
+                            } else if (li.attr("data-code").equals("EUR")) {
+                                euroAl = li.attr("data-buying");
+                                buffer.append(euroAl + ":");
+
+                                euroSat = li.attr("data-selling");
+                                buffer.append(euroSat);
+                            }
+                        }
+                    }
+                }
+//            Document docAltn = Jsoup.connect("http://altin.doviz.com/gram-altin").get();
+                /**
+                 * Altın
+                 * */
+//            Elements divAs = docAltn.select("div");
+//            for (Element div : divAs) {
+//                Log.i("**altin div ***", div.text());
+//                if (div.attr("class").equals("doviz-column btgold")) {
+//                    Elements lis = div.select("ul").select("li");
+//
+//                    for (Element li : lis) {
+//                        Log.i("**altin ***", li.select("div").text());
+//                        if (li.select("div").select("h1").text().equals("Gram Altın")) {
+//                            Elements dvs = li.select("div");
+//                            altinAl = dvs.get(4).text();
+//                            buffer.append(altinAl + ":");
+//                            Log.i("**altin al***", altinAl);
+//
+//                            altinSat = dvs.get(5).text();
+//                            buffer.append(altinSat + "-");
+//                            Log.i("**altin sat***", altinSat);
+//                        }
+//                    }
+//                }
+//            }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+
+            return buffer.toString();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            String[] deger = s.split(":");
+            if (deger.length == 4) {
+                notficationMessage = "";
+                alarmControl(addZero(deger[0]), shrp.DOLAR_ALIS, true);
+                alarmControl(addZero(deger[1]), shrp.DOLAR_SATIS, false);
+                alarmControl(addZero(deger[2]), shrp.EURO_ALIS, true);
+                alarmControl(addZero(deger[3]), shrp.EURO_SATIS, false);
+                if (!notficationMessage.equals(""))
+                    callAlarmManager(notficationMessage);
+            }
+        }
     }
 }

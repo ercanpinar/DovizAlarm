@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">Döviz Alarm</string>
+
+    <string name="title_section1">Döviz Kurları</string>
+    <string name="title_section2">Alarmlar</string>
+    <string name="title_section3">Hakkında</string>
+    <string name="title_section4">Merkez Bankası</string>
+    <string name="title_section5">Kur Çevirici</string>
+
+    <string name="navigation_drawer_open">Sol Menü Aç</string>
+    <string name="navigation_drawer_close">Sol Menü Kapat</string>
+
+    <string name="action_share">Paylaş</string>
+
+    <string name="action_settings">Ayarlar</string>
+
+
     <string name="notf_title">Alarm çalan kurlar</string>
     <string name="dolar_min_alarm">Dolar Satış</string>
     <string name="euro_min_alarm">Euro Satış</string>
@@ -8,5 +23,6 @@
     <string name="default_min_alarm">Alış için belirtilen alarm değerine eşit veya üzerinde.</string>
     <string name="default_max_alarm">Satış için belirtilen alarm değerine eşit veya altında.</string>
     <string name="dialog_info_message">Alış - Satış alarm değerlerini \n Örnek: 3 TL için 3.0000 şeklinde girmeniz gerekmektedir.\n Önceden girmiş olduğunuz bir alarmı iptal etmek için var olan değeri silip yerine 0.0000 yazıp kaydetmeniz gerekmektedir.</string>
-    
+    <string name="info_message">Döviz Alarm \n\n Döviz kurlarının değişimini farklı kaynaklardan anlık olarak takip edebilirsiniz. \n Ayrıca alarm sistemimiz sayesinde istediğiniz döviz kurunu (Alış-Satış) sizin yerinize takip ediyoruz.\n Alarm kontrol aralığı ve bildirim alma aktif - pasif kullanıcıya bırakılmış durumda. \n\n\n v1.0.2</string>
+
 </resources>

@@ -2,17 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/gray_light">
+                android:background="@color/background">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:text="ALARM"
         android:textStyle="bold"
         android:textSize="24sp"
-        android:textColor="@color/red_strong"/>
+        android:textColor="@color/gray_more_dark_grayish_blue"/>
 
     <LinearLayout
         android:id="@+id/ll_dolar_alis_satis_alarm"
@@ -20,9 +20,9 @@
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/cyan_strong"
+        android:background="@color/lacivert"
         android:clickable="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
@@ -156,10 +156,10 @@
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/cyan_strong"
+        android:background="@color/lacivert"
         android:clickable="true"
         android:layout_below="@+id/ll_dolar_alis_satis_alarm"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="130dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"

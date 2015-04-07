@@ -2,10 +2,7 @@
 
 buildscript {
     repositories {
-        maven { url "http://dl.bintray.com/populov/maven" }
         jcenter()
-        mavenCentral()
-        mavenLocal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.0'
@@ -15,14 +12,8 @@ buildscript {
     }
 }
 
-repositories {
-    mavenCentral()
-}
 allprojects {
     repositories {
         jcenter()
     }
-}
-configurations {
-    all*.exclude group: 'com.android.support', module: 'support-v4'
 }

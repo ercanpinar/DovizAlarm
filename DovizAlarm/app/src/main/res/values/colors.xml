@@ -5,10 +5,14 @@
     <color name="red_strong">#C70E1D</color>
     <color name="red_vivid">#E11021</color>
     <color name="white">#FFFFFF</color>
-    <color name="cyan_strong">#14B9D6</color>
+    <color name="black">#000000</color>
+
+    <color name="background">#CCCCCC</color>
+    <color name="lacivert">#000099</color>
     <color name="gray_dark_grayish_blue">#53565A</color>
     <color name="gray_more_dark_grayish_blue">#4C4F53</color>
     <color name="gray_light">#d3d3d3</color>
+    <color name="rippelColor">#0099CC</color>
 
 
 </resources>

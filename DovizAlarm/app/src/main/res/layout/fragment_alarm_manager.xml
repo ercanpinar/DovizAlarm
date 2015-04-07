@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            android:paddingLeft="20dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="DOLAR ALIŞ"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="DOLAR SATIŞ"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            android:paddingLeft="20dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/tv_dolar_alis_alarm_degeri_al"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="1.2345 TL"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+
+            <TextView
+                android:id="@+id/tv_dolar_satis_alarm_degeri_al"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="1.2345 TL"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            android:paddingLeft="20dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="EURO ALIŞ"
+                android:layout_weight="3"
+                android:textStyle="bold"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="EURO SATIŞ"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            android:paddingLeft="20dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/tv_euro_alis_alarm_degeri_al"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="1.2345 TL"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+            <TextView
+                android:id="@+id/tv_euro_satis_alarm_degeri_al"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="1.2345 TL"
+                android:layout_weight="3"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="4">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:text="Uygulamanın kurları çektiği kaynağı değiştirebilirsiniz."
+                android:textStyle="bold"
+                android:textColor="@color/gray_dark_grayish_blue"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="Kaynak 1"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_dark_grayish_blue"/>
+
+                    <RadioButton
+                        android:id="@+id/rd_dovizcom"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="Kaynak 2"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_dark_grayish_blue"/>
+
+                    <RadioButton
+                        android:id="@+id/rd_dovizgentr"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <com.gc.materialdesign.views.LayoutRipple
+        android:id="@+id/lr_alarm_al"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/red_strong"
+        android:clickable="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center|left"
+        >
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:padding="5dp"
+            android:src="@drawable/alarm"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="100dp"
+            android:text="ALARM KUR"
+            android:textSize="24sp"
+            android:textColor="@color/white"/>
+    </com.gc.materialdesign.views.LayoutRipple>
+</RelativeLayout>

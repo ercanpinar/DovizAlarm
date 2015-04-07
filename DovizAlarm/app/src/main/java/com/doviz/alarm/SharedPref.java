@@ -14,6 +14,7 @@ public class SharedPref {
     public String ALTIN_SATIS = "ALTIN_SATIS";
     public String ALTIN_ALIS = "ALTIN_ALIS";
     public String ALARM_SURE = "ALARM_SURE";
+    public String KAYNAK = "KAYNAK";
     Context context;
     private String SHARED_PREFS_FILE_NAME = "doviz_alarm_shared_prefs";
 
@@ -50,7 +51,7 @@ public class SharedPref {
     public String getAlarmTime() {
         String data = getPrefs().getString(ALARM_SURE, "");
         if (data == null || data.equals(""))
-            data = "1800000";
+            data = "60000";
         return data;
     }
 
@@ -58,6 +59,22 @@ public class SharedPref {
         String data = getPrefs().getString(kurType, "");
         if (data == null || data.equals(""))
             data = "0";
+        return data;
+    }
+
+    //kaynak
+    public void updateKaynak(String value) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        if (!value.equals("") && !value.equals("0")) {
+            editor.putString(KAYNAK, value);
+            editor.commit();
+        }
+    }
+
+    public String getKaynak() {
+        String data = getPrefs().getString(KAYNAK, "");
+        if (data == null || data.equals(""))
+            data = "1";
         return data;
     }
 }
