@@ -114,6 +114,11 @@ public class MainFragment extends BaseFragment {
             }
         });
         createSpinner();
+
+        /**
+         * Analytic
+         * */
+        GaUtil.sendView("Döviz Kurları");
         return rootView;
     }
 
@@ -160,6 +165,16 @@ public class MainFragment extends BaseFragment {
         ButterKnife.reset(this);
         this.rq.cancelAll(this);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        /**
+         * Analytic
+         * */
+        GaUtil.sendView("Döviz Kurları");
     }
 
     /**

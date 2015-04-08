@@ -310,7 +310,7 @@
             android:id="@+id/lr_guncelle_button"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:background="@color/red_vivid"
+            android:background="@color/red_strong"
             android:clickable="true"
             android:layout_margin="8dp"
             android:gravity="center"
