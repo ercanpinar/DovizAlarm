@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -77,6 +78,8 @@ public class MainFragment extends BaseFragment {
     LayoutRipple mLrGuncelle;
     @InjectView(R.id.sp_alarm_time)
     Spinner mSpAlarmMinuteList;
+    @InjectView(R.id.rl_loading)
+    RelativeLayout mRlLoading;
 
     MyTimerTask yourTask;
     Timer t;
@@ -118,6 +121,8 @@ public class MainFragment extends BaseFragment {
         /**
          * Analytic
          * */
+
+        GaUtil.init(getActivity());
         GaUtil.sendView("Döviz Kurları");
         return rootView;
     }
@@ -181,6 +186,7 @@ public class MainFragment extends BaseFragment {
      * Eventbus
      */
     public void onEvent(MainEvent event) {
+        mRlLoading.setVisibility(View.GONE);
 
         String[] deger = event.getResponse().split(":");
         if (deger.length == 4) {
@@ -201,10 +207,8 @@ public class MainFragment extends BaseFragment {
      */
     @OnClick(R.id.lr_guncelle_button)
     public void guncelleBtnClick(View view) {
+        mRlLoading.setVisibility(View.VISIBLE);
         Crouton.cancelAllCroutons();
-        Crouton.makeText(
-                MainFragment.this.getActivity(), "Güncelleniyor.",
-                Style.INFO).show();
 
         if (shrpT.getKaynak().equals("1"))
             new ParseUrlAsyncTask().execute(new String[]{"http://kur.doviz.com/serbest-piyasa/"});
@@ -319,7 +323,10 @@ public class MainFragment extends BaseFragment {
 
                         @Override
                         public void onResponse(JSONObject response) {
+
                             if (response != null) {
+                                mRlLoading.setVisibility(View.GONE);
+
                                 Gson gson = new Gson();
                                 Type type = new TypeToken<DovizResponse>() {
                                 }.getType();
@@ -357,6 +364,7 @@ public class MainFragment extends BaseFragment {
                     Crouton.makeText(
                             MainFragment.this.getActivity(), "Bir hata oluştu.",
                             Style.ALERT).show();
+                    mRlLoading.setVisibility(View.GONE);
                 }
             }
             );
@@ -366,6 +374,7 @@ public class MainFragment extends BaseFragment {
             Crouton.makeText(
                     MainFragment.this.getActivity(), "İnternet bağlantınızı kontrol ediniz.",
                     Style.ALERT).show();
+            mRlLoading.setVisibility(View.GONE);
         }
     }
 

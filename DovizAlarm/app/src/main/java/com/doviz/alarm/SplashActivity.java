@@ -27,7 +27,6 @@ public class SplashActivity extends ActionBarActivity {
         setContentView(R.layout.activity_splash);
         final RippleBackground rippleBackground = (RippleBackground) findViewById(R.id.content);
         rippleBackground.startRippleAnimation();
-
         mainIntent = new Intent(this, MainActivity.class);
         new Handler().postDelayed(new Runnable() {
             @Override

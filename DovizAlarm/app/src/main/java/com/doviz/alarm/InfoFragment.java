@@ -17,7 +17,24 @@ public class InfoFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_info, container, false);
         ButterKnife.inject(this, rootView);
+
+        /**
+         * Analytic
+         * */
+
+        GaUtil.sendView("Hakkında");
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        /**
+         * Analytic
+         * */
+
+        GaUtil.sendView("Hakkında");
     }
 
     @Override

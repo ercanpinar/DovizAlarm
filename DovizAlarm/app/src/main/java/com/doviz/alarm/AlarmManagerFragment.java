@@ -65,6 +65,12 @@ public class AlarmManagerFragment extends BaseFragment {
             }
         });
         setRadioButton();
+
+        /**
+         * Analytic
+         * */
+
+        GaUtil.sendView("Alarmlar");
         return rootView;
     }
 
@@ -208,6 +214,16 @@ public class AlarmManagerFragment extends BaseFragment {
                     AlarmManagerFragment.this.getActivity(), "Alarm durduruldu.",
                     Style.INFO).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        /**
+         * Analytic
+         * */
+
+        GaUtil.sendView("Alarmlar");
     }
 
     @Override
